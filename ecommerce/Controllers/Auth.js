@@ -7,8 +7,10 @@ const expressJwt=require('express-jwt') //authorisation checking
 exports.signup=(req,res)=>{
     // console.log("reqbody",req.body);
     const user=new User(req.body) //body-parser is used here
+    //console.log(" New user entry "+ user)
     user.save((err,user)=>{
         if(err){
+            console.log(err);
             return res.status(400).json({
                 err:errorHandler(err)
             });

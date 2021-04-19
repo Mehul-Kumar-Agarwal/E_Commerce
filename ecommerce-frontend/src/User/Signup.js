@@ -19,23 +19,19 @@ const Signup=()=>{
     const handleChange  = name=>event=>{
         setValues({...values,error:false,[name]:event.target.value})
     };
-    //this method will be used to create a new user by sending data to backend
+ 
+ //this method will be used to create a new user by sending data to backend
     const signup=(user)=>{
         // console.log(name,email,password);
-
+        console.log(JSON.stringify(user))
         fetch(`${API}/signup`,{
             //we can write whatever we are gonna send to backend here
             method:"POST",
-            // mode:'cors',
+            mode:'cors',
             headers:{
                 "Content-Type": "application/json",
-                
-                //  "Access-Control-Allow-Origin": "*",
-                // "Access-Control-Request-Method": "*",
-                 Accept: "application/json",
-                // "Access-Control-Allow-Headers":"*", 
-                // "Origin, X-Requested-With, Content-Type, Accept"
-                
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Request-Method": "*",
             },
             body:JSON.stringify(user)
         })
@@ -84,3 +80,53 @@ const Signup=()=>{
 };
 
 export default Signup;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    // const signup=(user)=>{
+    //     // console.log(name,email,password);
+
+    //     fetch(`${API}/signup`,{
+    //         //we can write whatever we are gonna send to backend here
+    //         method:"POST",
+    //         mode:'cors',
+    //         headers:{
+    //             "Content-Type": "application/json",
+                
+    //             //  "Access-Control-Allow-Origin": "*",
+    //             // "Access-Control-Request-Method": "*",
+    //              Accept: "application/json",
+    //             // "Access-Control-Allow-Headers":"*", 
+    //             // "Origin, X-Requested-With, Content-Type, Accept"
+                
+    //         },
+    //         body:JSON.stringify(user)
+    //     })
+    //     .then(response=>{
+    //         return response.json()
+    //     })
+    //     .catch(err=>{
+    //         console.log(err)
+    //     });
+    // };
