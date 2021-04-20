@@ -65,19 +65,3 @@ app.listen(port,()=>{
 
 
 
-
-
-
-//If we want to use Mongo Atlas, DATABASE=mongodb+srv://mehul:mehul@nodeapi.ykide.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-
-//db connection
-/*mongoose.connect(
-    process.env.MONGO_URI,
-    {useNewUrlParser: true}
-  )
-  .then(() => console.log('DB Connected'))
-  
-  mongoose.connection.on('error', err => {
-    console.log(`DB connection error: ${err.message}`)
-  });
-*/

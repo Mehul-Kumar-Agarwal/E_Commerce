@@ -1,8 +1,7 @@
 import React,{useState} from 'react'
 import Layout from '../core/Layout';
-import {API} from '../config';
-
-
+import {signup} from '../Auth/index';
+import {Link} from 'react-router-dom';
 
 
 const Signup=()=>{
@@ -14,39 +13,27 @@ const Signup=()=>{
         error:'',
         success:false
     });
-    const {name, email,password}=values;
+    //we are destructing the values we get from the form here so that we can use them in program
+    const {name, email,password,error,success}=values;
 
     const handleChange  = name=>event=>{
         setValues({...values,error:false,[name]:event.target.value})
     };
  
- //this method will be used to create a new user by sending data to backend
-    const signup=(user)=>{
-        // console.log(name,email,password);
-        console.log(JSON.stringify(user))
-        fetch(`${API}/signup`,{
-            //we can write whatever we are gonna send to backend here
-            method:"POST",
-            mode:'cors',
-            headers:{
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Request-Method": "*",
-            },
-            body:JSON.stringify(user)
-        })
-        .then(response=>{
-            return response.json()
-        })
-        .catch(err=>{
-            console.log(err)
-        });//to send data to back end we can use fetch and it is available in the browsers by default
-    };
-
+ 
     const clickSubmit=(event)=>{
         event.preventDefault();
+         setValues({...values,error:false});
         //create a new user
-        signup({name,email,password}); //since key value pair have same object we need to specify both of them
+        signup({name,email,password}) //since key value pair have same object we need to specify both of them
+        //to show user the error if there exsists any error and if no error, then we clear the form fields so that new user can signup
+        .then(data=>{
+            if(data.error){
+                setValues({...values,error:data.error,success:false})
+            }else{
+                setValues({...values,name:'',email:'',password:'',error:'',success:true})
+            }
+        });
     };
 
     
@@ -55,78 +42,44 @@ const Signup=()=>{
         <form>
             <div className="form-group">
                 <label className="text-muted">Name</label>
-                <input onChange={handleChange('name')} type="text" className="form-control"></input>
+                <input onChange={handleChange('name')} type="text" className="form-control" value={name}></input>
             </div>
             <div className="form-group">
                 <label className="text-muted">Email</label>
-                <input onChange={handleChange('email')} type="email" className="form-control"></input>
+                <input onChange={handleChange('email')} type="email" className="form-control" value={email}></input>
             </div>
             <div className="form-group">
                 <label className="text-muted">Password</label>
-                <input onChange={handleChange('password')} type="password" className="form-control"></input>
+                <input onChange={handleChange('password')} type="password" className="form-control" value={password}></input>
             </div>
             <button onClick={clickSubmit} className="btn btn-primary">Submit</button>
         </form>
     );
+
+    const showError = () => (
+   <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
+    {error}
+    </div>
+    
+    );
+
+    const showSuccess = () => (
+        <div className="alert alert-info" style={{ display: success ? '' : 'none' }}>
+            New account is created. Please <Link to="/signin">Signin</Link>
+        </div>
+    );
+
+
     return(
         <Layout
         title="SignUp Page"
         description="Sign Up to Node React E-Commerce App"
         className="container col-md-8 offset-md-2">
+        {showSuccess()}   {/*  to show success */}
+        {showError()}     {/*  to show Error if any in the inputs given */}
         {SignupForm()}
-        {JSON.stringify(values)}
     </Layout>
     );
 };
 
 export default Signup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    // const signup=(user)=>{
-    //     // console.log(name,email,password);
-
-    //     fetch(`${API}/signup`,{
-    //         //we can write whatever we are gonna send to backend here
-    //         method:"POST",
-    //         mode:'cors',
-    //         headers:{
-    //             "Content-Type": "application/json",
-                
-    //             //  "Access-Control-Allow-Origin": "*",
-    //             // "Access-Control-Request-Method": "*",
-    //              Accept: "application/json",
-    //             // "Access-Control-Allow-Headers":"*", 
-    //             // "Origin, X-Requested-With, Content-Type, Accept"
-                
-    //         },
-    //         body:JSON.stringify(user)
-    //     })
-    //     .then(response=>{
-    //         return response.json()
-    //     })
-    //     .catch(err=>{
-    //         console.log(err)
-    //     });
-    // };
